@@ -10,6 +10,7 @@ import { Note } from './models/Note.js';
 import validateToken from './middlewares/JWT.js';
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
