@@ -45,12 +45,9 @@ app.post('/register', async (req, res) => {
     });
     jwt.sign({ id: createdUser._id }, jwtSecret, {}, (err, token) => {
       if (err) throw err;
-      res
-        .cookie('token', token, { sameSite: 'none', secure: true })
-        .status(201)
-        .json({
-          id: createdUser._id,
-        });
+      res.cookie('token', token, { sameSite: 'none' }).status(201).json({
+        id: createdUser._id,
+      });
     });
   } catch (error) {
     console.log(error);
@@ -66,7 +63,7 @@ app.post('/login', async (req, res) => {
     const passOk = bcrypt.compareSync(password, foundUser.password);
     if (passOk) {
       jwt.sign({ id: foundUser._id }, jwtSecret, {}, (err, token) => {
-        res.cookie('token', token, { sameSite: 'none', secure: true }).json({
+        res.cookie('token', token, { sameSite: 'none' }).json({
           id: foundUser._id,
         });
       });
@@ -78,7 +75,7 @@ app.get('/profile', validateToken, (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  res.cookie('token', '', { sameSite: 'none', secure: true }).json('ok');
+  res.cookie('token', '', { sameSite: 'none' }).json('ok');
 });
 
 app.get('/getUser/:id', async (req, res) => {
