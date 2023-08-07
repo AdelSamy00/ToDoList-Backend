@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: 'https://todolist-iypm.onrender.com',
+    origin: 'https://todolist-ipym.netlify.app',
     optionSuccessStatus: 200,
   })
 );
