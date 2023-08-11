@@ -8,12 +8,25 @@ import cookieParser from 'cookie-parser';
 import { User } from './models/User.js';
 import { Note } from './models/Note.js';
 import validateToken from './middlewares/JWT.js';
+import session from 'express-session';
 
 const app = express();
+dotenv.config();
+const jwtSecret = process.env.JWT_SECRET;
+const bcryptSalt = bcrypt.genSaltSync(10);
+const mongoURL = process.env.MONGO_URL;
 app.set('trust proxy', 1);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+/* app.use(
+  session({
+    secret: jwtSecret,
+    cookie: {
+      sameSite: 'strict',
+    },
+  })
+); */
 app.use(
   cors({
     credentials: true,
@@ -21,10 +34,7 @@ app.use(
     optionSuccessStatus: 200,
   })
 );
-dotenv.config();
-const jwtSecret = process.env.JWT_SECRET;
-const bcryptSalt = bcrypt.genSaltSync(10);
-const mongoURL = process.env.MONGO_URL;
+
 mongoose.connect(mongoURL);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -48,6 +58,7 @@ app.post('/register', async (req, res) => {
         .status(201)
         .json({
           id: createdUser._id,
+          token,
         });
     });
   } catch (error) {
