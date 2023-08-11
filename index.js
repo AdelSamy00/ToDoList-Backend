@@ -26,6 +26,7 @@ app.use(cookieParser());
       sameSite: 'strict',
     },
   })
+  
 ); */
 app.use(
   cors({
